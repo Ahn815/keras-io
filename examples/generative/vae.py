@@ -32,6 +32,32 @@ class Sampling(layers.Layer):
 
 
 """
+## Build the encoder for inversion
+"""
+
+latent_dim = 2
+
+encoder_inputs = keras.Input(shape=2))
+x = layers.Dense(10, activation="relu")(encoder_inputs)
+x = layers.Dense(10, activation="relu")(encoder_inputs)
+z_mean = layers.Dense(latent_dim, name="z_mean")(x)
+z_log_var = layers.Dense(latent_dim, name="z_log_var")(x)
+z = Sampling()([z_mean, z_log_var])
+encoder_inv = keras.Model(encoder_inputs, [z_mean, z_log_var, z], name="encoder")
+encoder_inv.summary()
+
+"""
+## Build the decoder for inversion
+"""
+
+latent_inputs = keras.Input(shape=(latent_dim,))
+x = layers.Dense(10, activation="relu")(latent_inputs)
+x = layers.Dense(10, activation="relu")(latent_inputs)
+decoder_outputs = layers.Dense(2, activation="sigmoid")(x)
+decoder_inv = keras.Model(latent_inputs, decoder_outputs, name="decoder")
+decoder_inv.summary()
+
+"""
 ## Build the encoder
 """
 
